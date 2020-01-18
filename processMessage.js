@@ -31,10 +31,12 @@ exports.evaluate = (newRequest, currentRank, collection) => {
   })
 
   // 16 -> "1000"
-  let maxRankBinary = Math.max(...currentRank.map(x => x.rank)).toString()
+  let maxRankBinary = Math.max(...currentRank.map(x => x.rank)).toString(2)
 
   // "1" -> "1111" -> 15
   let maxPossibleRank = parseInt("1".repeat(maxRankBinary.length), 2)
+
+  //console.log(maxRankBinary, maxPossibleRank)
 
   let res = collection.map( x => {
     return {
