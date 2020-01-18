@@ -1,81 +1,53 @@
 var exports = module.exports = {}
 
-exports.rank = (newRequest, currentRank) => {
-  if (!newRequest) { // Request is Null or Undefined
+exports.evaluate = (newRequest, currentRank, collection) => {
+  if (!newRequest) {
     console.error("param : 'newRequest' should be an object")
     return
   }
-  if (!currentRank || !Array.isArray(currentRank)) { // Request is Null or Undefined
+  if (!currentRank || !Array.isArray(currentRank)) {
     console.error("param : 'currentRank' should be an array")
     return
   }
-
-  let res = []
-
-  if(currentRank.length == 0){
-    setRank(newRequest, res)
+  if (!collection || !Array.isArray(collection)) {
+    console.error("param : 'collection' should be an array")
+    return
   }
 
-  if(currentRank.length > 0){
-    res = currentRank
-    let requestKeys = Object.keys(newRequest)
-    let priorKeys = res.map(x => x.name)
-    let newKeys = requestKeys.filter(x => !priorKeys.includes(x))
+  let requestKeys = Object.keys(newRequest)
 
-    addNewKeys(newKeys, res, newRequest)
+  collection.forEach(x => {
+    x.rank = 0
+    let docKeys = Object.keys(x.request.formatted_data)
+    x.propertiesMatched = 0
+    currentRank.forEach(r => {
+      if (docKeys.includes(r.name) && requestKeys.includes(r.name)) {
+        if(newRequest[r.name][0] === x.request.formatted_data[r.name][0]){
+          x.rank += r.rank
+          x.propertiesMatched += 1
+        }
+      }
+    })
+  })
 
-    updateRank(requestKeys, res, newRequest)
-  }
+  // 16 -> "1000"
+  let maxRankBinary = Math.max(...currentRank.map(x => x.rank)).toString()
 
-  res.sort( (x, y) => x.rank > y.rank)
+  // "1" -> "1111" -> 15
+  let maxPossibleRank = parseInt("1".repeat(maxRankBinary.length), 2)
 
-  resolveDups(res)
+  let res = collection.map( x => {
+    return {
+      rank : x.rank,
+      response: {
+        raw_data: x.response.raw_data
+      },
+      propertiesMatched: x.propertiesMatched,
+      confidene: parseInt((x.rank/maxPossibleRank) * 100)
+    }
+  })
+
+  res.sort((x, y) => x.rank < y.rank)
 
   return res
-
-}
-
-let resolveDups = (res) => {
-  for(let i = 0; i < res.length; i++){
-    if(i+1 < res.length && res[i].rank === res[i+1].rank){
-      for(let j = i + 1; j < res.length; j++) {
-        res[j].rank = res[j].rank * 2;
-      }
-    }
-  }
-}
-
-let updateRank = (requestkeys, res, newRequest) => {
-  requestkeys.forEach(element => {
-    let ele = res.filter(x => x.name === element)[0]
-    if(!(ele.uniqueValues.includes(newRequest[ele.name][0]))){
-      ele.uniqueValues.push(newRequest[ele.name][0])
-      ele.rank = Math.pow(2, ele.uniqueValues.length - 1)
-    }else{
-      ele.rank = Math.pow(2, ele.uniqueValues.length - 1)
-    }
-  })
-}
-
-let addNewKeys = (newKeys, res, newRequest) => {
-  if(newKeys !== undefined && newKeys.length > 0) {
-    newKeys.forEach(element => {
-      res.push({
-        name: element,
-        rank: 1,
-        uniqueValues: [newRequest[element][0]]
-      })
-    })
-  }
-}
-
-let setRank = (newRequest, res) => {
-  let keys = Object.keys(newRequest)
-  keys.forEach(element => {
-    res.push({
-      name: element,
-      rank : 1,
-      uniqueValues: [newRequest[element][0]]
-    })
-  })
 }
