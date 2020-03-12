@@ -115,55 +115,43 @@ describe("when new requets is input", () => {
   let currentRank = [
     {"name": "a", "rank": 1, uniqueValues: [1]},
     {"name": "b", "rank": 2, uniqueValues: [2]},
-    {"name": "c", "rank": 4, uniqueValues: [3]},
-    {"name": "d", "rank": 8, uniqueValues: [4]},
-    {"name": "e", "rank": 16, uniqueValues: [5]}
+    {"name": "c", "rank": 3, uniqueValues: [3]},
+    {"name": "d", "rank": 4, uniqueValues: [4]},
+    {"name": "e", "rank": 5, uniqueValues: [5]}
   ]
 
   it('should return the records with descending order of derived rank', () => {
     let res = app.evaluate(newRequest, currentRank, collection)
 
-    console.log(res)
-
-    expect(res.find( x => x.rank === 31).response.raw_data).toEqual("abcde")
-    expect(res.find( x => x.rank === 31).propertiesMatched).toEqual(5)
-    expect(res.find( x => x.rank === 31).confidene).toEqual(100)
+    expect(res.find( x => x.confidene === 100).response.raw_data).toEqual("abcde")
+    expect(res.find( x => x.confidene === 100).propertiesMatched).toEqual(5)
     
-    expect(res.find( x => x.rank === 30).response.raw_data).toEqual("bcde")
-    expect(res.find( x => x.rank === 30).propertiesMatched).toEqual(4)
-    expect(res.find( x => x.rank === 30).confidene).toEqual(96)
+    expect(res.find( x => x.confidene === 96).response.raw_data).toEqual("bcde")
+    expect(res.find( x => x.confidene === 96).propertiesMatched).toEqual(4)
 
-    expect(res.find( x => x.rank === 28).response.raw_data).toEqual("cde")
-    expect(res.find( x => x.rank === 28).propertiesMatched).toEqual(3)
-    expect(res.find( x => x.rank === 28).confidene).toEqual(90)
+    expect(res.find( x => x.confidene === 90).response.raw_data).toEqual("cde")
+    expect(res.find( x => x.confidene === 90).propertiesMatched).toEqual(3)
 
-    expect(res.find( x => x.rank === 24).response.raw_data).toEqual("de")
-    expect(res.find( x => x.rank === 24).propertiesMatched).toEqual(2)
-    expect(res.find( x => x.rank === 24).confidene).toEqual(77)
+    expect(res.find( x => x.confidene === 77).response.raw_data).toEqual("de")
+    expect(res.find( x => x.confidene === 77).propertiesMatched).toEqual(2)
 
-    expect(res.find( x => x.rank === 22).response.raw_data).toEqual("bce")
-    expect(res.find( x => x.rank === 22).propertiesMatched).toEqual(3)
-    expect(res.find( x => x.rank === 22).confidene).toEqual(70)
+    expect(res.find( x => x.confidene === 70).response.raw_data).toEqual("bce")
+    expect(res.find( x => x.confidene === 70).propertiesMatched).toEqual(3)
 
-    expect(res.find( x => x.rank === 17).response.raw_data).toEqual("ae")
-    expect(res.find( x => x.rank === 17).propertiesMatched).toEqual(2)
-    expect(res.find( x => x.rank === 17).confidene).toEqual(54)
+    expect(res.find( x => x.confidene === 54).response.raw_data).toEqual("ae")
+    expect(res.find( x => x.confidene === 54).propertiesMatched).toEqual(2)
 
-    expect(res.find( x => x.rank === 11).response.raw_data).toEqual("abd")
-    expect(res.find( x => x.rank === 11).propertiesMatched).toEqual(3)
-    expect(res.find( x => x.rank === 11).confidene).toEqual(35)
+    expect(res.find( x => x.confidene === 35).response.raw_data).toEqual("abd")
+    expect(res.find( x => x.confidene === 35).propertiesMatched).toEqual(3)
 
-    expect(res.find( x => x.rank === 10).response.raw_data).toEqual("bd")
-    expect(res.find( x => x.rank === 10).propertiesMatched).toEqual(2)
-    expect(res.find( x => x.rank === 10).confidene).toEqual(32)
+    expect(res.find( x => x.confidene === 32).response.raw_data).toEqual("bd")
+    expect(res.find( x => x.confidene === 32).propertiesMatched).toEqual(2)
 
-    expect(res.find( x => x.rank === 6).response.raw_data).toEqual("bc")
-    expect(res.find( x => x.rank === 6).propertiesMatched).toEqual(2)
-    expect(res.find( x => x.rank === 6).confidene).toEqual(19)
+    expect(res.find( x => x.confidene === 19).response.raw_data).toEqual("bc")
+    expect(res.find( x => x.confidene === 19).propertiesMatched).toEqual(2)
 
-    expect(res.find( x => x.rank === 1).response.raw_data).toEqual("a")
-    expect(res.find( x => x.rank === 1).propertiesMatched).toEqual(1)
-    expect(res.find( x => x.rank === 1).confidene).toEqual(3)
+    expect(res.find( x => x.confidene === 3).response.raw_data).toEqual("a")
+    expect(res.find( x => x.confidene === 3).propertiesMatched).toEqual(1)
 
   })
 

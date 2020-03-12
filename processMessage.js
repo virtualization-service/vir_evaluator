@@ -15,6 +15,7 @@ exports.evaluate = (newRequest, currentRank, collection) => {
   }
 
   let requestKeys = Object.keys(newRequest)
+  currentRank = currentRank.sort((x, y) => x.rank < y.rank).slice(0, 1023);
 
   collection.forEach(x => {
     x.rank = 0
@@ -23,7 +24,7 @@ exports.evaluate = (newRequest, currentRank, collection) => {
     currentRank.forEach(r => {
       if (docKeys.includes(r.name) && requestKeys.includes(r.name)) {
         if(newRequest[r.name][0] === x.request.formatted_data[r.name][0]){
-          x.rank += r.rank
+          x.rank += Math.pow(2, r.rank - 1)
           x.propertiesMatched += 1
         }
       }
@@ -31,7 +32,7 @@ exports.evaluate = (newRequest, currentRank, collection) => {
   })
 
   // 16 -> "1000"
-  let maxRankBinary = Math.max(...currentRank.map(x => x.rank)).toString(2)
+  let maxRankBinary = Math.max(...currentRank.map(x => Math.pow(2, x.rank-1))).toString(2)
 
   // "1" -> "1111" -> 15
   let maxPossibleRank = parseInt("1".repeat(maxRankBinary.length), 2)

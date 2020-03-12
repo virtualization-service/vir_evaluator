@@ -51,17 +51,17 @@ const handleQueueMessage = async (responseMsg) => {
     let rankSortedDocs = processor(msg.request.formatted_data, ranker.data, collection)
     let res = {"operation": msg.operation, "data": rankSortedDocs}
 
-    performRequest(Buffer.from(JSON.stringify(res)))
+    performRequest(Buffer.from(JSON.stringify(res)), responseMsg.properties)
   }catch(error) {
     console.error('Could not parse the error message. Using entire response for error', error)
   }
 }
 
-const performRequest = async (msg) => {
+const performRequest = async (msg, properties) => {
   let actualClient = await initializeClient()
 
   console.log('Placing message into exchange [destination : ' + exchange + ']')
-  return await actualClient.sendMessage(exchange, 'ranker.completed', msg)
+  return await actualClient.sendMessage(exchange, 'ranker.completed', msg, properties)
 }
 
 module.exports = {
