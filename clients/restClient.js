@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
-const ranksURL = process.env.RANKER_DB_SERVICE_URL ? process.env.RANKER_DB_SERVICE_URL : 'rest server url to get ranker from db/store'
-const docsURL = process.env.DOCS_DB_SERVICE_URL ? process.env.DOCS_DB_SERVICE_URL : 'rest server url to get documents from db/store'
+const ranksURL = process.env.RANKER_DB_SERVICE_URL ? process.env.RANKER_DB_SERVICE_URL : 'http://data-saver-virtualization.apps.us-east-1.starter.openshift-online.com/api/data/ranker'
+const docsURL = process.env.DOCS_DB_SERVICE_URL ? process.env.DOCS_DB_SERVICE_URL : 'http://data-saver-virtualization.apps.us-east-1.starter.openshift-online.com/api/data/responses'
 //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 const getRanker = async (operationName) => {
