@@ -1,10 +1,10 @@
 const rabbitMqClient = require('./rabbitMqClient')
-const processor = require('../processMessage').rank
+const processor = require('../processMessage').evaluate
 const getRanker = require('./restClient').getRanker
 const getDocuments = require('./restClient').getDocuments
 
 let actualClientPromise
-let srcQueue = process.env.SRC_QUEUE_NAME ? process.env.SRC_QUEUE_NAME : 'ranker'
+let srcQueue = process.env.SRC_QUEUE_NAME ? process.env.SRC_QUEUE_NAME : 'evaluator'
 let destQueue = process.env.DEST_QUEUE_NAME ? process.env.DEST_QUEUE_NAME : 'response'
 let exchange = process.env.EXCHANGE ? process.env.EXCHANGE : 'virtualization'
 
@@ -21,12 +21,14 @@ const performInitialization = () => {
     let actualClient
     try {
       actualClient = await rabbitMqClient.connect()
+      console.log("listening to message on exchange "+ exchange )
+
       await actualClient.createQueue(srcQueue)
       await actualClient.createExchange(exchange, 'topic')
       await actualClient.bindQueue(srcQueue, exchange, 'parser.completed')
 
-      await actualClient.createQueue(destQueue)
-      await actualClient.bindQueue(destQueue, exchange, 'evaluator.completed')
+      // await actualClient.createQueue(destQueue)
+      // await actualClient.bindQueue(destQueue, exchange, 'evaluator.completed')
 
       await actualClient.onMessage(srcQueue, handleQueueMessage)
       resolve(actualClient)
@@ -61,7 +63,7 @@ const performRequest = async (msg, properties) => {
   let actualClient = await initializeClient()
 
   console.log('Placing message into exchange [destination : ' + exchange + ']')
-  return await actualClient.sendMessage(exchange, 'ranker.completed', msg, properties)
+  return await actualClient.sendMessage(exchange, 'evaluator.completed', msg, properties)
 }
 
 module.exports = {

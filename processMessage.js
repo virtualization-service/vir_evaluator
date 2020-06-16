@@ -1,4 +1,12 @@
 var exports = module.exports = {}
+var defaultResponse = {
+  "rank" : 0,
+  "response": {
+    "raw_data": "Training not configured"
+  },
+  "propertiesMatched": 0,
+  "confidene": 0
+}
 
 exports.evaluate = (newRequest, currentRank, collection) => {
   if (!newRequest) {
@@ -11,7 +19,7 @@ exports.evaluate = (newRequest, currentRank, collection) => {
   }
   if (!collection || !Array.isArray(collection)) {
     console.error("param : 'collection' should be an array")
-    return
+    return defaultResponse
   }
 
   let requestKeys = Object.keys(newRequest)
@@ -52,5 +60,5 @@ exports.evaluate = (newRequest, currentRank, collection) => {
 
   res.sort((x, y) => x.rank < y.rank)
 
-  return res
+  return res && res.length > 0 ? res[0] : defaultResponse
 }
