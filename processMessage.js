@@ -8,6 +8,17 @@ var defaultResponse = {
   "confidene": 0
 }
 
+var rankCompare = function(a, b) {
+
+  let comparison = 0;
+  if (a.rank > b.rank) {
+    comparison = -1;
+  } else if (a.rank < b.rank) {
+    comparison = 1;
+  }
+  return comparison;
+}
+
 exports.evaluate = (newRequest, currentRank, collection) => {
   if (!newRequest) {
     console.error("param : 'newRequest' should be an object")
@@ -45,7 +56,6 @@ exports.evaluate = (newRequest, currentRank, collection) => {
   // "1" -> "1111" -> 15
   let maxPossibleRank = parseInt("1".repeat(maxRankBinary.length), 2)
 
-  //console.log(maxRankBinary, maxPossibleRank)
 
   let res = collection.map( x => {
     return {
@@ -58,7 +68,7 @@ exports.evaluate = (newRequest, currentRank, collection) => {
     }
   })
 
-  res.sort((x, y) => x.rank < y.rank)
+  res.sort(rankCompare)
 
   return res && res.length > 0 ? res[0] : defaultResponse
 }

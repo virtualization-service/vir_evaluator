@@ -47,7 +47,10 @@ const handleQueueMessage = async (responseMsg) => {
     let ranker = await getRanker(msg.operation)
     ranker = JSON.parse(ranker)
 
+    console.log('ranker respose' + ranker)
+
     let collection = await getDocuments(msg.operation)
+    console.log('document respose' + collection)
     collection = JSON.parse(collection)
 
     let rankSortedDocs = processor(msg.request.formatted_data, ranker.data, collection)

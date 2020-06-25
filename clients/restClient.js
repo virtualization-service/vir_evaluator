@@ -14,6 +14,7 @@ const getRanker = async (operationName) => {
   }
 
   try {
+    console.log('getting data from url' + url )
     res = await fetch(url, request)
     if (!res.ok) {
       throw new Error('Fetch Error: ' + res.status + ' - ' + await res.text())
@@ -38,6 +39,7 @@ const getDocuments = async (operationName) => {
   }
 
   try {
+    console.log('getting data from url' + url )
     res = await fetch(url, request)
     if (!res.ok) {
       throw new Error('Fetch Error: ' + res.status + ' - ' + await res.text())
