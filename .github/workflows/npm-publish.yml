@@ -57,7 +57,7 @@ jobs:
         # Oc command to be executed
         cmd: |
           'version'
-          'project development'
+          'project virtualization'
           'tag --source=docker quay.io/neinnovationorg/evaluator:${{ steps.extract_branch.outputs.branch }} virtualization/evaluator:${{ steps.extract_branch.outputs.branch }}'
     - name: Scan Image
       uses: Azure/container-scan@v0
