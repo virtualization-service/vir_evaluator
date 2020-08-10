@@ -1,7 +1,7 @@
 const rabbitMqClient = require('./rabbitMqClient')
 const processor = require('../processMessage').evaluate
-const getRanker = require('./restClient').getRanker
-const getDocuments = require('./restClient').getDocuments
+const getRanker = require('./mongoDbClient').getRanker
+const getDocuments = require('./mongoDbClient').getDocuments
 
 let actualClientPromise
 let srcQueue = process.env.SRC_QUEUE_NAME ? process.env.SRC_QUEUE_NAME : 'evaluator'

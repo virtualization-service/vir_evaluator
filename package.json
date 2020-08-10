@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/PratikTheGameDever/vir_evaluator#readme",
   "dependencies": {
+    "all": "0.0.0",
     "amqplib": "^0.5.5",
+    "mongodb": "^3.6.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
