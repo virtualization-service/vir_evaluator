@@ -1,7 +1,6 @@
 const rabbitMqClient = require('./rabbitMqClient')
 const processor = require('../processMessage').evaluate
-const getRanker = require('./mongoDbClient').getRanker
-const getDocuments = require('./mongoDbClient').getDocuments
+const executeCalls = require('./mongoDbClient').executeCalls
 
 let actualClientPromise
 let srcQueue = process.env.SRC_QUEUE_NAME ? process.env.SRC_QUEUE_NAME : 'evaluator'
@@ -44,12 +43,12 @@ const handleQueueMessage = async (responseMsg) => {
   console.log('Handling response message')
   try {
     let msg = JSON.parse(responseMsg.content.toString())
-    let ranker = await getRanker(msg.operation)
+    let ranker = await executeCalls(msg.operation,'getRanker')
     ranker = JSON.parse(ranker)
 
     console.log('ranker respose' + ranker)
 
-    let collection = await getDocuments(msg.operation)
+    let collection = await executeCalls(msg.operation,'getDocuments')
     console.log('document respose' + collection)
     collection = JSON.parse(collection)
 

@@ -24,8 +24,7 @@
   "dependencies": {
     "all": "0.0.0",
     "amqplib": "^0.5.5",
-    "mongodb": "^3.6.0",
-    "node-fetch": "^2.6.0"
+    "mongodb": "^3.6.0"
   },
   "devDependencies": {
     "jasmine": "^3.5.0"
