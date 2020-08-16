@@ -24,6 +24,7 @@ const executeCalls = async function (operation,type) {
       return JSON.stringify(response);
     }
   }
+  }
   if(type=="getRanker")
   {
     let filterOperation = { 'operation': operation };
@@ -31,7 +32,6 @@ const executeCalls = async function (operation,type) {
     const response = await collection.find(filterOperation, { projection: projection }).toArray();
     return JSON.stringify(response);
   }
-}
 };
 
 //Exporting methods so that other functions can call
