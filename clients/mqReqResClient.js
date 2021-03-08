@@ -54,7 +54,7 @@ const handleQueueMessage = async (responseMsg) => {
     collection = JSON.parse(collection)
 
     let rankSortedDocs = processor(msg.request.formatted_data, ranker.data, collection)
-    let res = {"operation": msg.operation, "data": rankSortedDocs}
+    let res = {"operation": msg.operation, "data": rankSortedDocs, "serviceData" : ranker.serviceData}
 
     performRequest(Buffer.from(JSON.stringify(res)), responseMsg.properties)
   }catch(error) {
